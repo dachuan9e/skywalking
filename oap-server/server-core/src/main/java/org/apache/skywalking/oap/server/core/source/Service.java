@@ -80,4 +80,22 @@ public class Service extends Source {
     @Getter
     @Setter
     private TCPInfo tcpInfo = new TCPInfo();
+
+    @Override
+    public void recycle() {
+        entityId = null;
+        name = null;
+        nodeType = null;
+        serviceInstanceName = null;
+        endpointName = null;
+        latency = 0;
+        status = false;
+        responseCode = 0;
+        type = null;
+        tags = null;
+        sideCar.recycle();
+        tcpInfo.recycle();
+        setTimeBucket(0);
+        handle.recycle(this);
+    }
 }

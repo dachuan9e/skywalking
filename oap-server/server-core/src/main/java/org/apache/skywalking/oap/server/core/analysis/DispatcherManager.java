@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.skywalking.oap.server.core.Recyclable;
 import org.apache.skywalking.oap.server.core.UnexpectedException;
 import org.apache.skywalking.oap.server.core.source.ISource;
 import org.slf4j.Logger;
@@ -59,6 +60,9 @@ public class DispatcherManager implements DispatcherDetectorListener {
             source.prepare();
             for (SourceDispatcher dispatcher : dispatchers) {
                 dispatcher.dispatch(source);
+            }
+            if (source instanceof Recyclable<?>) {
+                ((Recyclable<?>) source).recycle();
             }
         }
     }

@@ -51,4 +51,10 @@ public class BrowserAppSingleVersionPerf extends BrowserAppPerfSource {
     public void prepare() {
         serviceId = IDManager.ServiceID.buildId(serviceName, nodeType);
     }
+
+    @Override
+    protected void recycle0() {
+        serviceId = null;
+        serviceName = null;
+    }
 }

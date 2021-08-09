@@ -24,6 +24,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.skywalking.oap.server.core.Const;
+import org.apache.skywalking.oap.server.core.MetricsObjectPool;
 import org.apache.skywalking.oap.server.core.analysis.IDManager;
 import org.apache.skywalking.oap.server.core.analysis.MetricsExtension;
 import org.apache.skywalking.oap.server.core.analysis.NodeType;
@@ -94,11 +95,21 @@ public class ServiceTraffic extends Metrics {
         return builder;
     }
 
+    @Override
+    public void recycle() {
+        this.name = null;
+        this.nodeType = null;
+        this.group = null;
+        setTimeBucket(0);
+        setLastUpdateTimestamp(0);
+        handle.recycle(this);
+    }
+
     public static class Builder implements StorageHashMapBuilder<ServiceTraffic> {
 
         @Override
         public ServiceTraffic storage2Entity(final Map<String, Object> dbMap) {
-            ServiceTraffic serviceTraffic = new ServiceTraffic();
+            ServiceTraffic serviceTraffic = MetricsObjectPool.get(ServiceTraffic.class);
             serviceTraffic.setName((String) dbMap.get(NAME));
             serviceTraffic.setNodeType(NodeType.valueOf(((Number) dbMap.get(NODE_TYPE)).intValue()));
             serviceTraffic.setGroup((String) dbMap.get(GROUP));

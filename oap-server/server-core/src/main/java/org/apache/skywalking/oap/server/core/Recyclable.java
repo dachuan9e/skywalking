@@ -13,26 +13,14 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
  */
 
-package org.apache.skywalking.oap.server.core.source;
+package org.apache.skywalking.oap.server.core;
 
 import io.netty.util.Recycler;
-import lombok.Getter;
-import lombok.Setter;
-import org.apache.skywalking.oap.server.core.Recyclable;
 
-public abstract class Source implements ISource, Recyclable<Source> {
+public interface Recyclable<T> {
+    void handle(Recycler.Handle<T> handle);
 
-    @Getter
-    @Setter
-    private long timeBucket;
-
-    protected Recycler.Handle<Source> handle;
-
-    @Override
-    public void handle(final Recycler.Handle<Source> handle) {
-        this.handle = handle;
-    }
+    void recycle();
 }

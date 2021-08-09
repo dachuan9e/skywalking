@@ -25,6 +25,7 @@ import org.apache.skywalking.apm.network.language.agent.v3.SegmentObject;
 import org.apache.skywalking.apm.network.language.agent.v3.SpanLayer;
 import org.apache.skywalking.apm.network.language.agent.v3.SpanObject;
 import org.apache.skywalking.oap.server.core.CoreModule;
+import org.apache.skywalking.oap.server.core.SourceObjectPool;
 import org.apache.skywalking.oap.server.core.analysis.NodeType;
 import org.apache.skywalking.oap.server.core.analysis.TimeBucket;
 import org.apache.skywalking.oap.server.core.config.NamingControl;
@@ -72,7 +73,7 @@ public class NetworkAddressAliasMappingListener implements EntryAnalysisListener
                     final String instanceName = namingControl.formatInstanceName(
                         segmentObject.getServiceInstance());
 
-                    final NetworkAddressAliasSetup networkAddressAliasSetup = new NetworkAddressAliasSetup();
+                    final NetworkAddressAliasSetup networkAddressAliasSetup = SourceObjectPool.get(NetworkAddressAliasSetup.class);
                     networkAddressAliasSetup.setAddress(networkAddressUsedAtPeer);
                     networkAddressAliasSetup.setRepresentService(serviceName);
                     networkAddressAliasSetup.setRepresentServiceNodeType(NodeType.Normal);

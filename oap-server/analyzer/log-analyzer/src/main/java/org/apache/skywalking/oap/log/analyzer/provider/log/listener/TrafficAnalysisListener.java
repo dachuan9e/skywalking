@@ -23,6 +23,7 @@ import org.apache.skywalking.apm.network.logging.v3.LogData;
 import org.apache.skywalking.apm.util.StringUtil;
 import org.apache.skywalking.oap.log.analyzer.provider.LogAnalyzerModuleConfig;
 import org.apache.skywalking.oap.server.core.CoreModule;
+import org.apache.skywalking.oap.server.core.SourceObjectPool;
 import org.apache.skywalking.oap.server.core.analysis.DownSampling;
 import org.apache.skywalking.oap.server.core.analysis.IDManager;
 import org.apache.skywalking.oap.server.core.analysis.NodeType;
@@ -68,20 +69,20 @@ public class TrafficAnalysisListener implements LogAnalysisListener {
         // to service traffic
         String serviceName = namingControl.formatServiceName(logData.getService());
         String serviceId = IDManager.ServiceID.buildId(serviceName, NodeType.Normal);
-        serviceMeta = new ServiceMeta();
+        serviceMeta = SourceObjectPool.get(ServiceMeta.class);
         serviceMeta.setName(namingControl.formatServiceName(logData.getService()));
         serviceMeta.setNodeType(NodeType.Normal);
         serviceMeta.setTimeBucket(timeBucket);
         // to service instance traffic
         if (StringUtil.isNotEmpty(logData.getServiceInstance())) {
-            instanceMeta = new ServiceInstanceUpdate();
+            instanceMeta = SourceObjectPool.get(ServiceInstanceUpdate.class);
             instanceMeta.setServiceId(serviceId);
             instanceMeta.setName(namingControl.formatInstanceName(logData.getServiceInstance()));
             instanceMeta.setTimeBucket(timeBucket);
         }
         // to endpoint traffic
         if (StringUtil.isNotEmpty(logData.getEndpoint())) {
-            endpointMeta = new EndpointMeta();
+            endpointMeta = SourceObjectPool.get(EndpointMeta.class);
             endpointMeta.setServiceName(serviceName);
             endpointMeta.setServiceNodeType(NodeType.Normal);
             endpointMeta.setEndpoint(namingControl.formatEndpointName(serviceName, logData.getEndpoint()));

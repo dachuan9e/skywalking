@@ -33,6 +33,11 @@ public class Log extends AbstractLog {
     }
 
     @Override
+    protected void recycle0() {
+        uniqueId = null;
+    }
+
+    @Override
     public int scope() {
         return DefaultScopeDefine.LOG;
     }

@@ -32,6 +32,7 @@ import org.apache.skywalking.apm.util.StringUtil;
 import org.apache.skywalking.oap.log.analyzer.provider.LogAnalyzerModuleConfig;
 import org.apache.skywalking.oap.server.core.Const;
 import org.apache.skywalking.oap.server.core.CoreModule;
+import org.apache.skywalking.oap.server.core.SourceObjectPool;
 import org.apache.skywalking.oap.server.core.analysis.IDManager;
 import org.apache.skywalking.oap.server.core.analysis.NodeType;
 import org.apache.skywalking.oap.server.core.analysis.TimeBucket;
@@ -53,7 +54,7 @@ public class RecordAnalysisListener implements LogAnalysisListener {
     private final SourceReceiver sourceReceiver;
     private final NamingControl namingControl;
     private final List<String> searchableTagKeys;
-    private final Log log = new Log();
+    private final Log log = SourceObjectPool.get(Log.class);
 
     @Override
     public void build() {

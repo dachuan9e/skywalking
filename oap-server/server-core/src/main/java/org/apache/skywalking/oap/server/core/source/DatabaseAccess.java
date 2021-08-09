@@ -53,4 +53,14 @@ public class DatabaseAccess extends Source {
     @Getter
     @Setter
     private boolean status;
+
+    @Override
+    public void recycle() {
+        name = null;
+        databaseTypeId = 0;
+        latency = 0;
+        status = false;
+        setTimeBucket(0);
+        handle.recycle(this);
+    }
 }

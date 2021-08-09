@@ -28,6 +28,7 @@ import org.apache.skywalking.apm.network.language.agent.v3.Memory;
 import org.apache.skywalking.apm.network.language.agent.v3.MemoryPool;
 import org.apache.skywalking.apm.network.language.agent.v3.Thread;
 import org.apache.skywalking.oap.server.core.CoreModule;
+import org.apache.skywalking.oap.server.core.SourceObjectPool;
 import org.apache.skywalking.oap.server.core.analysis.IDManager;
 import org.apache.skywalking.oap.server.core.analysis.NodeType;
 import org.apache.skywalking.oap.server.core.analysis.TimeBucket;
@@ -76,7 +77,7 @@ public class JVMSourceDispatcher {
                                         String serviceInstanceId,
                                         long timeBucket,
                                         CPU cpu) {
-        ServiceInstanceJVMCPU serviceInstanceJVMCPU = new ServiceInstanceJVMCPU();
+        ServiceInstanceJVMCPU serviceInstanceJVMCPU = SourceObjectPool.get(ServiceInstanceJVMCPU.class);
         serviceInstanceJVMCPU.setId(serviceInstanceId);
         serviceInstanceJVMCPU.setName(serviceInstance);
         serviceInstanceJVMCPU.setServiceId(serviceId);
@@ -95,7 +96,7 @@ public class JVMSourceDispatcher {
                                        long timeBucket,
                                        List<GC> gcs) {
         gcs.forEach(gc -> {
-            ServiceInstanceJVMGC serviceInstanceJVMGC = new ServiceInstanceJVMGC();
+            ServiceInstanceJVMGC serviceInstanceJVMGC = SourceObjectPool.get(ServiceInstanceJVMGC.class);
             serviceInstanceJVMGC.setId(serviceInstanceId);
             serviceInstanceJVMGC.setName(serviceInstance);
             serviceInstanceJVMGC.setServiceId(serviceId);
@@ -124,7 +125,7 @@ public class JVMSourceDispatcher {
                                            long timeBucket,
                                            List<Memory> memories) {
         memories.forEach(memory -> {
-            ServiceInstanceJVMMemory serviceInstanceJVMMemory = new ServiceInstanceJVMMemory();
+            ServiceInstanceJVMMemory serviceInstanceJVMMemory = SourceObjectPool.get(ServiceInstanceJVMMemory.class);
             serviceInstanceJVMMemory.setId(serviceInstanceId);
             serviceInstanceJVMMemory.setName(serviceInstance);
             serviceInstanceJVMMemory.setServiceId(serviceId);
@@ -147,7 +148,7 @@ public class JVMSourceDispatcher {
                                                List<MemoryPool> memoryPools) {
 
         memoryPools.forEach(memoryPool -> {
-            ServiceInstanceJVMMemoryPool serviceInstanceJVMMemoryPool = new ServiceInstanceJVMMemoryPool();
+            ServiceInstanceJVMMemoryPool serviceInstanceJVMMemoryPool = SourceObjectPool.get(ServiceInstanceJVMMemoryPool.class);
             serviceInstanceJVMMemoryPool.setId(serviceInstanceId);
             serviceInstanceJVMMemoryPool.setName(serviceInstance);
             serviceInstanceJVMMemoryPool.setServiceId(serviceId);
@@ -189,7 +190,7 @@ public class JVMSourceDispatcher {
                                            String serviceInstanceId,
                                            long timeBucket,
                                            Thread thread) {
-        ServiceInstanceJVMThread serviceInstanceJVMThread = new ServiceInstanceJVMThread();
+        ServiceInstanceJVMThread serviceInstanceJVMThread = SourceObjectPool.get(ServiceInstanceJVMThread.class);
         serviceInstanceJVMThread.setId(serviceInstanceId);
         serviceInstanceJVMThread.setName(serviceInstance);
         serviceInstanceJVMThread.setServiceId(serviceId);
@@ -211,7 +212,7 @@ public class JVMSourceDispatcher {
                                           String serviceInstanceId,
                                           long timeBucket,
                                           Class clazz) {
-        ServiceInstanceJVMClass serviceInstanceJVMClass = new ServiceInstanceJVMClass();
+        ServiceInstanceJVMClass serviceInstanceJVMClass = SourceObjectPool.get(ServiceInstanceJVMClass.class);
         serviceInstanceJVMClass.setId(serviceInstanceId);
         serviceInstanceJVMClass.setName(serviceInstance);
         serviceInstanceJVMClass.setServiceId(serviceId);

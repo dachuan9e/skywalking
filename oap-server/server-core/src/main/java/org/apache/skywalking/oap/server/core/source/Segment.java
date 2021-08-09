@@ -26,6 +26,8 @@ import org.apache.skywalking.oap.server.core.analysis.manual.searchtag.Tag;
 
 import static org.apache.skywalking.oap.server.core.source.DefaultScopeDefine.SEGMENT;
 
+@Getter
+@Setter
 @ScopeDeclaration(id = SEGMENT, name = "Segment")
 public class Segment extends Source {
 
@@ -39,37 +41,32 @@ public class Segment extends Source {
         return segmentId;
     }
 
-    @Setter
-    @Getter
     private String segmentId;
-    @Setter
-    @Getter
     private String traceId;
-    @Setter
-    @Getter
     private String serviceId;
-    @Setter
-    @Getter
     private String serviceInstanceId;
-    @Setter
-    @Getter
     private String endpointName;
-    @Setter
-    @Getter
     private String endpointId;
-    @Setter
-    @Getter
     private long startTime;
-    @Setter
-    @Getter
     private int latency;
-    @Setter
-    @Getter
     private int isError;
-    @Setter
-    @Getter
     private byte[] dataBinary;
-    @Setter
-    @Getter
     private List<Tag> tags = new ArrayList<>();
+
+    @Override
+    public void recycle() {
+        segmentId = null;
+        traceId = null;
+        serviceId = null;
+        serviceInstanceId = null;
+        endpointName = null;
+        endpointId = null;
+        startTime = 0;
+        latency = 0;
+        isError = 0;
+        dataBinary = null;
+        tags.clear();
+        setTimeBucket(0);
+        handle.recycle(this);
+    }
 }

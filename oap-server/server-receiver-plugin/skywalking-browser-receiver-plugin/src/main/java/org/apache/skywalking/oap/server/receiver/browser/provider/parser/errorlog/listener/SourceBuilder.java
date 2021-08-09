@@ -21,6 +21,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.apache.skywalking.apm.network.language.agent.v3.ErrorCategory;
+import org.apache.skywalking.oap.server.core.SourceObjectPool;
 import org.apache.skywalking.oap.server.core.browser.source.BrowserAppPageTraffic;
 import org.apache.skywalking.oap.server.core.browser.source.BrowserAppSingleVersionTraffic;
 import org.apache.skywalking.oap.server.core.browser.source.BrowserAppTraffic;
@@ -80,7 +81,7 @@ class SourceBuilder {
      * Browser service traffic error related source.
      */
     BrowserAppTraffic toBrowserAppTraffic() {
-        BrowserAppTraffic traffic = new BrowserAppTraffic();
+        BrowserAppTraffic traffic = SourceObjectPool.get(BrowserAppTraffic.class);
         toBrowserAppTrafficSource(traffic);
         traffic.setName(service);
         traffic.setTrafficCategory(trafficCategory);
@@ -92,7 +93,7 @@ class SourceBuilder {
      * Browser single version error metrics related source.
      */
     BrowserAppSingleVersionTraffic toBrowserAppSingleVersionTraffic() {
-        BrowserAppSingleVersionTraffic traffic = new BrowserAppSingleVersionTraffic();
+        BrowserAppSingleVersionTraffic traffic = SourceObjectPool.get(BrowserAppSingleVersionTraffic.class);
         toBrowserAppTrafficSource(traffic);
         traffic.setName(serviceVersion);
         traffic.setServiceName(service);
@@ -103,7 +104,7 @@ class SourceBuilder {
      * Browser page error metrics related source.
      */
     BrowserAppPageTraffic toBrowserAppPageTraffic() {
-        BrowserAppPageTraffic traffic = new BrowserAppPageTraffic();
+        BrowserAppPageTraffic traffic = SourceObjectPool.get(BrowserAppPageTraffic.class);
         toBrowserAppTrafficSource(traffic);
         traffic.setName(patePath);
         traffic.setServiceName(service);

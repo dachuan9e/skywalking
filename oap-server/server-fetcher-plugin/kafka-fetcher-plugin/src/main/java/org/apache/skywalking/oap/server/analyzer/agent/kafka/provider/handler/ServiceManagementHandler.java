@@ -29,6 +29,7 @@ import org.apache.skywalking.apm.network.management.v3.InstancePingPkg;
 import org.apache.skywalking.apm.network.management.v3.InstanceProperties;
 import org.apache.skywalking.oap.server.analyzer.agent.kafka.module.KafkaFetcherConfig;
 import org.apache.skywalking.oap.server.core.CoreModule;
+import org.apache.skywalking.oap.server.core.SourceObjectPool;
 import org.apache.skywalking.oap.server.core.analysis.DownSampling;
 import org.apache.skywalking.oap.server.core.analysis.IDManager;
 import org.apache.skywalking.oap.server.core.analysis.NodeType;
@@ -71,7 +72,7 @@ public class ServiceManagementHandler extends AbstractKafkaHandler {
     }
 
     private final void serviceReportProperties(InstanceProperties request) {
-        ServiceInstanceUpdate serviceInstanceUpdate = new ServiceInstanceUpdate();
+        ServiceInstanceUpdate serviceInstanceUpdate = SourceObjectPool.get(ServiceInstanceUpdate.class);
         final String serviceName = namingLengthControl.formatServiceName(request.getService());
         final String instanceName = namingLengthControl.formatInstanceName(request.getServiceInstance());
         serviceInstanceUpdate.setServiceId(IDManager.ServiceID.buildId(serviceName, NodeType.Normal));
@@ -106,7 +107,7 @@ public class ServiceManagementHandler extends AbstractKafkaHandler {
             log.debug("A ping of Service[{}] instance[{}].", serviceName, instanceName);
         }
 
-        ServiceInstanceUpdate serviceInstanceUpdate = new ServiceInstanceUpdate();
+        ServiceInstanceUpdate serviceInstanceUpdate = SourceObjectPool.get(ServiceInstanceUpdate.class);
         serviceInstanceUpdate.setServiceId(IDManager.ServiceID.buildId(serviceName, NodeType.Normal));
         serviceInstanceUpdate.setName(instanceName);
         serviceInstanceUpdate.setTimeBucket(timeBucket);

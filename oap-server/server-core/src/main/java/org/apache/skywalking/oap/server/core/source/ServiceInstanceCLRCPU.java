@@ -58,4 +58,15 @@ public class ServiceInstanceCLRCPU extends Source {
     @Getter
     @Setter
     private double usePercent;
+
+    @Override
+    public void recycle() {
+        this.id = null;
+        this.name = null;
+        this.serviceName = null;
+        this.serviceId = null;
+        this.usePercent = 0;
+        setTimeBucket(0);
+        handle.recycle(this);
+    }
 }

@@ -80,4 +80,23 @@ public class ZipkinSpan extends Source {
     @Setter
     @Getter
     private List<String> tags = new ArrayList<>();
+
+    @Override
+    public void recycle() {
+        traceId = null;
+        spanId = null;
+        serviceId = null;
+        serviceInstanceId = null;
+        endpointName = null;
+        endpointId = null;
+        startTime = 0;
+        endTime = 0;
+        latency = 0;
+        isError = 0;
+        dataBinary = null;
+        encode = 0;
+        tags.clear();
+        setTimeBucket(0);
+        handle.recycle(this);
+    }
 }

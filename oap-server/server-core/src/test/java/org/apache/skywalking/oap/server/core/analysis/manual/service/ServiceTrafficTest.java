@@ -19,6 +19,7 @@
 package org.apache.skywalking.oap.server.core.analysis.manual.service;
 
 import java.util.Map;
+import org.apache.skywalking.oap.server.core.MetricsObjectPool;
 import org.apache.skywalking.oap.server.core.analysis.NodeType;
 import org.junit.Assert;
 import org.junit.Test;
@@ -26,7 +27,7 @@ import org.junit.Test;
 public class ServiceTrafficTest {
     @Test
     public void testGrouping() {
-        ServiceTraffic traffic = new ServiceTraffic();
+        ServiceTraffic traffic = MetricsObjectPool.get(ServiceTraffic.class);
         traffic.setName("group-name::service-name");
         traffic.setNodeType(NodeType.Normal);
         final Map<String, Object> stringObjectMap = new ServiceTraffic.Builder().entity2Storage(traffic);
@@ -35,7 +36,7 @@ public class ServiceTrafficTest {
 
     @Test
     public void testNoGrouping() {
-        ServiceTraffic traffic = new ServiceTraffic();
+        ServiceTraffic traffic = MetricsObjectPool.get(ServiceTraffic.class);
         traffic.setName("group-name:service-name:no");
         traffic.setNodeType(NodeType.Normal);
         final Map<String, Object> stringObjectMap = new ServiceTraffic.Builder().entity2Storage(traffic);

@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.skywalking.apm.network.common.v3.Commands;
 import org.apache.skywalking.apm.network.management.v3.InstanceProperties;
 import org.apache.skywalking.oap.server.core.CoreModule;
+import org.apache.skywalking.oap.server.core.SourceObjectPool;
 import org.apache.skywalking.oap.server.core.analysis.DownSampling;
 import org.apache.skywalking.oap.server.core.analysis.IDManager;
 import org.apache.skywalking.oap.server.core.analysis.NodeType;
@@ -59,13 +60,13 @@ public class ManagementServiceKeepAliveHandler extends JettyJsonHandler {
         final String instanceName = namingControl.formatInstanceName(request.getServiceInstance());
 
         final long timeBucket = TimeBucket.getTimeBucket(System.currentTimeMillis(), DownSampling.Minute);
-        ServiceInstanceUpdate serviceInstanceUpdate = new ServiceInstanceUpdate();
+        ServiceInstanceUpdate serviceInstanceUpdate = SourceObjectPool.get(ServiceInstanceUpdate.class);
         serviceInstanceUpdate.setServiceId(IDManager.ServiceID.buildId(serviceName, NodeType.Normal));
         serviceInstanceUpdate.setName(instanceName);
         serviceInstanceUpdate.setTimeBucket(timeBucket);
         sourceReceiver.receive(serviceInstanceUpdate);
 
-        ServiceMeta serviceMeta = new ServiceMeta();
+        ServiceMeta serviceMeta = SourceObjectPool.get(ServiceMeta.class);
         serviceMeta.setName(serviceName);
         serviceMeta.setNodeType(NodeType.Normal);
         serviceMeta.setTimeBucket(timeBucket);

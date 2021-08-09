@@ -65,4 +65,16 @@ public class EnvoyInstanceMetric extends Source {
     @Getter
     @Setter
     private double value;
+
+    @Override
+    public void recycle() {
+        id = null;
+        serviceId = null;
+        name = null;
+        serviceName = null;
+        metricName = null;
+        value = 0;
+        setTimeBucket(0);
+        handle.recycle(this);
+    }
 }

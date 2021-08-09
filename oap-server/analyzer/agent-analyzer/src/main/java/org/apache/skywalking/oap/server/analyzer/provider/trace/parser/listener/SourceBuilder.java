@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.apache.skywalking.apm.network.common.v3.KeyStringValuePair;
 import org.apache.skywalking.apm.util.StringUtil;
+import org.apache.skywalking.oap.server.core.SourceObjectPool;
 import org.apache.skywalking.oap.server.core.analysis.NodeType;
 import org.apache.skywalking.oap.server.core.config.NamingControl;
 import org.apache.skywalking.oap.server.core.source.All;
@@ -112,7 +113,7 @@ class SourceBuilder {
      * The global level metrics source
      */
     All toAll() {
-        All all = new All();
+        All all = SourceObjectPool.get(All.class);
         all.setName(destServiceName);
         all.setServiceInstanceName(destServiceInstanceName);
         all.setEndpointName(destEndpointName);
@@ -129,7 +130,7 @@ class SourceBuilder {
      * Service meta and metrics related source of {@link #destServiceName}. The metrics base on the OAL scripts.
      */
     Service toService() {
-        Service service = new Service();
+        Service service = SourceObjectPool.get(Service.class);
         service.setName(destServiceName);
         service.setServiceInstanceName(destServiceInstanceName);
         service.setEndpointName(destEndpointName);
@@ -147,7 +148,7 @@ class SourceBuilder {
      * Service topology meta and metrics related source. The metrics base on the OAL scripts.
      */
     ServiceRelation toServiceRelation() {
-        ServiceRelation serviceRelation = new ServiceRelation();
+        ServiceRelation serviceRelation = SourceObjectPool.get(ServiceRelation.class);
         serviceRelation.setSourceServiceName(sourceServiceName);
         serviceRelation.setSourceServiceNodeType(sourceNodeType);
         serviceRelation.setSourceServiceInstanceName(sourceServiceInstanceName);
@@ -170,7 +171,7 @@ class SourceBuilder {
      * scripts.
      */
     ServiceInstance toServiceInstance() {
-        ServiceInstance serviceInstance = new ServiceInstance();
+        ServiceInstance serviceInstance = SourceObjectPool.get(ServiceInstance.class);
         serviceInstance.setName(destServiceInstanceName);
         serviceInstance.setServiceName(destServiceName);
         serviceInstance.setNodeType(destNodeType);
@@ -191,7 +192,7 @@ class SourceBuilder {
         if (StringUtil.isEmpty(sourceServiceInstanceName) || StringUtil.isEmpty(destServiceInstanceName)) {
             return null;
         }
-        ServiceInstanceRelation serviceInstanceRelation = new ServiceInstanceRelation();
+        ServiceInstanceRelation serviceInstanceRelation = SourceObjectPool.get(ServiceInstanceRelation.class);
         serviceInstanceRelation.setSourceServiceName(sourceServiceName);
         serviceInstanceRelation.setSourceServiceNodeType(sourceNodeType);
         serviceInstanceRelation.setSourceServiceInstanceName(sourceServiceInstanceName);
@@ -213,7 +214,7 @@ class SourceBuilder {
      * Endpoint meta and metrics of {@link #destEndpointName} related source. The metrics base on the OAL scripts.
      */
     Endpoint toEndpoint() {
-        Endpoint endpoint = new Endpoint();
+        Endpoint endpoint = SourceObjectPool.get(Endpoint.class);
         endpoint.setName(destEndpointName);
         endpoint.setServiceName(destServiceName);
         endpoint.setServiceNodeType(destNodeType);
@@ -263,7 +264,7 @@ class SourceBuilder {
      * generate traffic and metrics both.
      */
     ServiceMeta toServiceMeta() {
-        ServiceMeta service = new ServiceMeta();
+        ServiceMeta service = SourceObjectPool.get(ServiceMeta.class);
         service.setName(destServiceName);
         service.setNodeType(destNodeType);
         service.setTimeBucket(timeBucket);
@@ -277,7 +278,7 @@ class SourceBuilder {
         if (!RequestType.DATABASE.equals(type)) {
             return null;
         }
-        DatabaseAccess databaseAccess = new DatabaseAccess();
+        DatabaseAccess databaseAccess = SourceObjectPool.get(DatabaseAccess.class);
         databaseAccess.setDatabaseTypeId(componentId);
         databaseAccess.setLatency(latency);
         databaseAccess.setName(destServiceName);

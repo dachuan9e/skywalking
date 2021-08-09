@@ -61,4 +61,17 @@ public class ServiceInstanceJVMGC extends Source {
     @Getter
     @Setter
     private long count;
+
+    @Override
+    public void recycle() {
+        id = null;
+        name = null;
+        serviceName = null;
+        serviceId = null;
+        phrase = null;
+        time = 0;
+        count = 0;
+        setTimeBucket(0);
+        handle.recycle(this);
+    }
 }

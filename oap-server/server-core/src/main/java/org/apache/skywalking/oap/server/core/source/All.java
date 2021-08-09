@@ -60,4 +60,18 @@ public class All extends Source {
     @Getter
     @Setter
     private List<String> tags;
+
+    @Override
+    public void recycle() {
+        name = null;
+        serviceInstanceName = null;
+        endpointName = null;
+        latency = 0;
+        status = false;
+        responseCode = 0;
+        type = null;
+        tags = null;
+        setTimeBucket(0);
+        handle.recycle(this);
+    }
 }

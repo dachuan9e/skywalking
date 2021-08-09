@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.skywalking.apm.util.StringUtil;
 import org.apache.skywalking.oap.server.core.CoreModule;
+import org.apache.skywalking.oap.server.core.SourceObjectPool;
 import org.apache.skywalking.oap.server.core.analysis.IDManager;
 import org.apache.skywalking.oap.server.core.analysis.NodeType;
 import org.apache.skywalking.oap.server.core.analysis.TimeBucket;
@@ -40,7 +41,7 @@ import org.apache.skywalking.oap.server.receiver.browser.provider.parser.errorlo
 public class ErrorLogRecordListener implements ErrorLogAnalysisListener {
     private final NamingControl namingControl;
     private final SourceReceiver sourceReceiver;
-    private final BrowserErrorLog errorLog = new BrowserErrorLog();
+    private final BrowserErrorLog errorLog = SourceObjectPool.get(BrowserErrorLog.class);
     private final ErrorLogRecordSampler sampler;
     private SampleStatus sampleStatus = SampleStatus.UNKNOWN;
 

@@ -20,6 +20,7 @@ package org.apache.skywalking.oap.server.receiver.browser.provider.parser.perfor
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.apache.skywalking.oap.server.core.SourceObjectPool;
 import org.apache.skywalking.oap.server.core.browser.source.BrowserAppPagePerf;
 import org.apache.skywalking.oap.server.core.browser.source.BrowserAppPageTraffic;
 import org.apache.skywalking.oap.server.core.browser.source.BrowserAppPerf;
@@ -121,7 +122,7 @@ class SourceBuilder {
      * Browser service meta and traffic metrics related source.
      */
     BrowserAppTraffic toBrowserAppTraffic() {
-        BrowserAppTraffic traffic = new BrowserAppTraffic();
+        BrowserAppTraffic traffic = SourceObjectPool.get(BrowserAppTraffic.class);
         traffic.setName(service);
         toBrowserAppTrafficSource(traffic);
         return traffic;
@@ -131,7 +132,7 @@ class SourceBuilder {
      * Browser single version meta and traffic metrics related source.
      */
     BrowserAppSingleVersionTraffic toBrowserAppSingleVersionTraffic() {
-        BrowserAppSingleVersionTraffic traffic = new BrowserAppSingleVersionTraffic();
+        BrowserAppSingleVersionTraffic traffic = SourceObjectPool.get(BrowserAppSingleVersionTraffic.class);
         traffic.setName(serviceVersion);
         traffic.setServiceName(service);
         toBrowserAppTrafficSource(traffic);
@@ -142,7 +143,7 @@ class SourceBuilder {
      * Browser page meta and traffic metrics related source.
      */
     BrowserAppPageTraffic toBrowserAppPageTraffic() {
-        BrowserAppPageTraffic traffic = new BrowserAppPageTraffic();
+        BrowserAppPageTraffic traffic = SourceObjectPool.get(BrowserAppPageTraffic.class);
         traffic.setName(patePath);
         traffic.setServiceName(service);
         toBrowserAppTrafficSource(traffic);
@@ -171,7 +172,7 @@ class SourceBuilder {
      * Browser service performance related source.
      */
     BrowserAppPerf toBrowserAppPerf() {
-        BrowserAppPerf perf = new BrowserAppPerf();
+        BrowserAppPerf perf = SourceObjectPool.get(BrowserAppPerf.class);
         perf.setName(service);
         toBrowserAppPerfSource(perf);
         return perf;
@@ -181,7 +182,7 @@ class SourceBuilder {
      * Browser single version performance related source.
      */
     BrowserAppSingleVersionPerf toBrowserAppSingleVersionPerf() {
-        BrowserAppSingleVersionPerf perf = new BrowserAppSingleVersionPerf();
+        BrowserAppSingleVersionPerf perf = SourceObjectPool.get(BrowserAppSingleVersionPerf.class);
         perf.setName(serviceVersion);
         perf.setServiceName(service);
         toBrowserAppPerfSource(perf);
@@ -192,7 +193,7 @@ class SourceBuilder {
      * Browser page performance related source.
      */
     BrowserAppPagePerf toBrowserAppPagePerf() {
-        BrowserAppPagePerf perf = new BrowserAppPagePerf();
+        BrowserAppPagePerf perf = SourceObjectPool.get(BrowserAppPagePerf.class);
         perf.setName(patePath);
         perf.setServiceName(service);
         toBrowserAppPerfSource(perf);

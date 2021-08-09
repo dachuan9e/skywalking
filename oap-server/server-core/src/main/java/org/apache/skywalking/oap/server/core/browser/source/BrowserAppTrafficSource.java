@@ -39,4 +39,15 @@ public abstract class BrowserAppTrafficSource extends Source {
      * if {@link #trafficCategory} is {@link BrowserAppTrafficCategory#NORMAL}, errorCategory is null.
      */
     private BrowserErrorCategory errorCategory;
+
+    @Override
+    public void recycle() {
+        name = null;
+        trafficCategory = null;
+        errorCategory = null;
+        recycle0();
+        handle.recycle(this);
+    }
+
+    protected abstract void recycle0();
 }

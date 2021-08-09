@@ -67,4 +67,19 @@ public class ServiceInstanceJVMMemoryPool extends Source {
     @Getter
     @Setter
     private long committed;
+
+    @Override
+    public void recycle() {
+        id = null;
+        name = null;
+        serviceName = null;
+        serviceId = null;
+        poolType = null;
+        init = 0;
+        max = 0;
+        used = 0;
+        committed = 0;
+        setTimeBucket(0);
+        handle.recycle(this);
+    }
 }

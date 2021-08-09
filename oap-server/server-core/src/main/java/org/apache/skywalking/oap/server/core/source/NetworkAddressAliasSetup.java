@@ -56,4 +56,16 @@ public class NetworkAddressAliasSetup extends Source {
         representServiceId = IDManager.ServiceID.buildId(representService, representServiceNodeType);
         representServiceInstanceId = IDManager.ServiceInstanceID.buildId(representServiceId, representServiceInstance);
     }
+
+    @Override
+    public void recycle() {
+        address = null;
+        representService = null;
+        representServiceNodeType = null;
+        representServiceInstance = null;
+        representServiceId = null;
+        representServiceInstanceId = null;
+        setTimeBucket(0);
+        handle.recycle(this);
+    }
 }

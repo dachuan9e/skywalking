@@ -49,4 +49,13 @@ public class ServiceInstanceUpdate extends Source {
     @Getter
     @Setter
     private JsonObject properties;
+
+    @Override
+    public void recycle() {
+        serviceId = null;
+        name = null;
+        properties = null;
+        setTimeBucket(0);
+        handle.recycle(this);
+    }
 }

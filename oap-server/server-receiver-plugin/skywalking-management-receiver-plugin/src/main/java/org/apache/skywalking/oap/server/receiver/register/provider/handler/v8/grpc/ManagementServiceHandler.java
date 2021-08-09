@@ -28,6 +28,7 @@ import org.apache.skywalking.apm.network.management.v3.InstancePingPkg;
 import org.apache.skywalking.apm.network.management.v3.InstanceProperties;
 import org.apache.skywalking.apm.network.management.v3.ManagementServiceGrpc;
 import org.apache.skywalking.oap.server.core.CoreModule;
+import org.apache.skywalking.oap.server.core.SourceObjectPool;
 import org.apache.skywalking.oap.server.core.analysis.DownSampling;
 import org.apache.skywalking.oap.server.core.analysis.IDManager;
 import org.apache.skywalking.oap.server.core.analysis.NodeType;
@@ -54,7 +55,7 @@ public class ManagementServiceHandler extends ManagementServiceGrpc.ManagementSe
     @Override
     public void reportInstanceProperties(final InstanceProperties request,
                                          final StreamObserver<Commands> responseObserver) {
-        ServiceInstanceUpdate serviceInstanceUpdate = new ServiceInstanceUpdate();
+        ServiceInstanceUpdate serviceInstanceUpdate = SourceObjectPool.get(ServiceInstanceUpdate.class);
         final String serviceName = namingControl.formatServiceName(request.getService());
         final String instanceName = namingControl.formatInstanceName(request.getServiceInstance());
         serviceInstanceUpdate.setServiceId(IDManager.ServiceID.buildId(serviceName, NodeType.Normal));
@@ -85,13 +86,13 @@ public class ManagementServiceHandler extends ManagementServiceGrpc.ManagementSe
         final String serviceName = namingControl.formatServiceName(request.getService());
         final String instanceName = namingControl.formatInstanceName(request.getServiceInstance());
 
-        ServiceInstanceUpdate serviceInstanceUpdate = new ServiceInstanceUpdate();
+        ServiceInstanceUpdate serviceInstanceUpdate = SourceObjectPool.get(ServiceInstanceUpdate.class);
         serviceInstanceUpdate.setServiceId(IDManager.ServiceID.buildId(serviceName, NodeType.Normal));
         serviceInstanceUpdate.setName(instanceName);
         serviceInstanceUpdate.setTimeBucket(timeBucket);
         sourceReceiver.receive(serviceInstanceUpdate);
 
-        ServiceMeta serviceMeta = new ServiceMeta();
+        ServiceMeta serviceMeta = SourceObjectPool.get(ServiceMeta.class);
         serviceMeta.setName(serviceName);
         serviceMeta.setNodeType(NodeType.Normal);
         serviceMeta.setTimeBucket(timeBucket);

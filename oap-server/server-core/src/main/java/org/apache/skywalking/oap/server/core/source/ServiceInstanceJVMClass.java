@@ -61,4 +61,17 @@ public class ServiceInstanceJVMClass extends Source {
     @Getter
     @Setter
     private long totalLoadedClassCount;
+
+    @Override
+    public void recycle() {
+        id = null;
+        name = null;
+        serviceName = null;
+        serviceId = null;
+        loadedClassCount = 0;
+        totalUnloadedClassCount = 0;
+        totalLoadedClassCount = 0;
+        setTimeBucket(0);
+        handle.recycle(this);
+    }
 }

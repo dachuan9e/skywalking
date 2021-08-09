@@ -18,14 +18,16 @@
 
 package org.apache.skywalking.oap.server.core.source;
 
+import io.netty.util.Recycler;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.skywalking.oap.server.core.Recyclable;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class TCPInfo {
+public class TCPInfo implements Recyclable<TCPInfo> {
     @Getter
     @Setter
     private long receivedBytes;
@@ -33,4 +35,15 @@ public class TCPInfo {
     @Getter
     @Setter
     private long sentBytes;
+
+    @Override
+    public void handle(final Recycler.Handle<TCPInfo> handle) {
+        // not directly pooled
+    }
+
+    @Override
+    public void recycle() {
+        receivedBytes = 0;
+        sentBytes = 0;
+    }
 }

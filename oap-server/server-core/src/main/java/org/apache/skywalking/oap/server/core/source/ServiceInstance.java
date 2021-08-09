@@ -89,4 +89,23 @@ public class ServiceInstance extends Source {
     public void prepare() {
         serviceId = IDManager.ServiceID.buildId(serviceName, nodeType);
     }
+
+    @Override
+    public void recycle() {
+        entityId = null;
+        serviceId = null;
+        name = null;
+        serviceName = null;
+        nodeType = null;
+        endpointName = null;
+        latency = 0;
+        status = false;
+        responseCode = 0;
+        type = null;
+        tags = null;
+        sideCar.recycle();
+        tcpInfo.recycle();
+        setTimeBucket(0);
+        handle.recycle(this);
+    }
 }

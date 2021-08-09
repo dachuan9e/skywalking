@@ -24,6 +24,7 @@ import org.apache.skywalking.apm.network.language.agent.v3.ClrGC;
 import org.apache.skywalking.apm.network.language.agent.v3.ClrThread;
 import org.apache.skywalking.oap.server.core.Const;
 import org.apache.skywalking.oap.server.core.CoreModule;
+import org.apache.skywalking.oap.server.core.SourceObjectPool;
 import org.apache.skywalking.oap.server.core.analysis.IDManager;
 import org.apache.skywalking.oap.server.core.analysis.NodeType;
 import org.apache.skywalking.oap.server.core.source.ServiceInstanceCLRCPU;
@@ -51,7 +52,7 @@ public class CLRSourceDispatcher {
         final String serviceInstanceId = IDManager.ServiceInstanceID.buildId(serviceId, serviceInstance);
 
         CPU cpu = metrics.getCpu();
-        ServiceInstanceCLRCPU serviceInstanceCLRCPU = new ServiceInstanceCLRCPU();
+        ServiceInstanceCLRCPU serviceInstanceCLRCPU = SourceObjectPool.get(ServiceInstanceCLRCPU.class);
         serviceInstanceCLRCPU.setUsePercent(cpu.getUsagePercent());
         serviceInstanceCLRCPU.setTimeBucket(minuteTimeBucket);
         serviceInstanceCLRCPU.setId(serviceInstanceId);
@@ -61,7 +62,7 @@ public class CLRSourceDispatcher {
         sourceReceiver.receive(serviceInstanceCLRCPU);
 
         ClrGC gc = metrics.getGc();
-        ServiceInstanceCLRGC serviceInstanceCLRGC = new ServiceInstanceCLRGC();
+        ServiceInstanceCLRGC serviceInstanceCLRGC = SourceObjectPool.get(ServiceInstanceCLRGC.class);
         serviceInstanceCLRGC.setGen0CollectCount(gc.getGen0CollectCount());
         serviceInstanceCLRGC.setGen1CollectCount(gc.getGen1CollectCount());
         serviceInstanceCLRGC.setGen2CollectCount(gc.getGen2CollectCount());
@@ -74,7 +75,7 @@ public class CLRSourceDispatcher {
         sourceReceiver.receive(serviceInstanceCLRGC);
 
         ClrThread thread = metrics.getThread();
-        ServiceInstanceCLRThread serviceInstanceCLRThread = new ServiceInstanceCLRThread();
+        ServiceInstanceCLRThread serviceInstanceCLRThread = SourceObjectPool.get(ServiceInstanceCLRThread.class);
         serviceInstanceCLRThread.setAvailableCompletionPortThreads(thread.getAvailableCompletionPortThreads());
         serviceInstanceCLRThread.setAvailableWorkerThreads(thread.getAvailableWorkerThreads());
         serviceInstanceCLRThread.setMaxCompletionPortThreads(thread.getMaxCompletionPortThreads());

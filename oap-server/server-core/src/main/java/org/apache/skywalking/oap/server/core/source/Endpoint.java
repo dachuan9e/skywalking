@@ -87,4 +87,22 @@ public class Endpoint extends Source {
     public void prepare() {
         serviceId = IDManager.ServiceID.buildId(serviceName, serviceNodeType);
     }
+
+    @Override
+    public void recycle() {
+        entityId = null;
+        name = null;
+        serviceId = null;
+        serviceName = null;
+        serviceNodeType = null;
+        serviceInstanceName = null;
+        latency = 0;
+        status = false;
+        responseCode = 0;
+        type = null;
+        tags = null;
+        sideCar.recycle();
+        setTimeBucket(0);
+        handle.recycle(this);
+    }
 }

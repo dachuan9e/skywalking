@@ -18,18 +18,30 @@
 
 package org.apache.skywalking.oap.server.core.source;
 
+import io.netty.util.Recycler;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.skywalking.oap.server.core.Recyclable;
 
 /**
  * As service mesh is becoming the next generation standard infrastructure for k8s and out-of-k8s env, the sidecar
  * source would be an attachment for sources of Service, Instance, Endpoint, and their relationship.
  */
-public class SideCar {
+public class SideCar implements Recyclable<SideCar> {
     /**
      * the sidecar/gateway proxy internal error code, the value bases on the implementation.
      */
     @Setter
     @Getter
     private String internalErrorCode = "";
+
+    @Override
+    public void handle(final Recycler.Handle<SideCar> handle) {
+        // not pooled directly
+    }
+
+    @Override
+    public void recycle() {
+        this.internalErrorCode = "";
+    }
 }

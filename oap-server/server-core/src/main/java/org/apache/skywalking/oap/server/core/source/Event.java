@@ -23,6 +23,7 @@ import java.util.Map;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.skywalking.oap.server.core.MetricsObjectPool;
 import org.apache.skywalking.oap.server.core.analysis.IDManager;
 import org.apache.skywalking.oap.server.core.analysis.MetricsExtension;
 import org.apache.skywalking.oap.server.core.analysis.Stream;
@@ -230,6 +231,24 @@ public class Event extends Metrics implements ISource, WithMetadata, LongValueHo
         return id;
     }
 
+    @Override
+    public void recycle() {
+        this.uuid = null;
+        this.service = null;
+        this.serviceInstance = null;
+        this.endpoint = null;
+        this.name = null;
+        this.type = null;
+        this.message = null;
+        this.parameters = null;
+        this.startTime = 0;
+        this.endTime = 0;
+        this.value = 0;
+        setTimeBucket(0);
+        setLastUpdateTimestamp(0);
+        handle.recycle(this);
+    }
+
     public static class Builder implements StorageHashMapBuilder<Event> {
         @Override
         public Map<String, Object> entity2Storage(Event storageData) {
@@ -250,7 +269,7 @@ public class Event extends Metrics implements ISource, WithMetadata, LongValueHo
 
         @Override
         public Event storage2Entity(Map<String, Object> dbMap) {
-            Event record = new Event();
+            Event record = MetricsObjectPool.get(Event.class);
             record.setUuid((String) dbMap.get(UUID));
             record.setService((String) dbMap.get(SERVICE));
             record.setServiceInstance((String) dbMap.get(SERVICE_INSTANCE));

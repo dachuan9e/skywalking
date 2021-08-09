@@ -44,4 +44,28 @@ public abstract class BrowserAppPerfSource extends Source {
     private int ttlTime;
     private int firstPackTime;
     private int fmpTime;
+
+    @Override
+    public void recycle() {
+        name = null;
+        redirectTime = 0;
+        dnsTime = 0;
+        ttfbTime = 0;
+        tcpTime = 0;
+        transTime = 0;
+        domAnalysisTime = 0;
+        fptTime = 0;
+        domReadyTime = 0;
+        loadPageTime = 0;
+        resTime = 0;
+        sslTime = 0;
+        ttlTime = 0;
+        firstPackTime = 0;
+        fmpTime = 0;
+        setTimeBucket(0);
+        handle.recycle(this);
+        recycle0();
+    }
+
+    protected abstract void recycle0();
 }

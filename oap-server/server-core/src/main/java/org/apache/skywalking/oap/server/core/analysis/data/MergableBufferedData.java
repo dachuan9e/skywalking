@@ -18,10 +18,10 @@
 
 package org.apache.skywalking.oap.server.core.analysis.data;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import org.apache.skywalking.oap.server.core.analysis.metrics.Metrics;
 
 /**
@@ -31,7 +31,7 @@ import org.apache.skywalking.oap.server.core.analysis.metrics.Metrics;
  * Concurrency {@link #accept(Metrics)}s and {@link #read()} while {@link #accept(Metrics)} are both not recommended.
  */
 public class MergableBufferedData<METRICS extends Metrics> implements BufferedData<METRICS> {
-    private Map<String, METRICS> buffer;
+    private final Map<String, METRICS> buffer;
 
     public MergableBufferedData() {
         buffer = new HashMap<>();
@@ -52,6 +52,7 @@ public class MergableBufferedData<METRICS extends Metrics> implements BufferedDa
             buffer.put(id, data);
         } else {
             final boolean isAbandoned = !existed.combine(data);
+            data.recycle();
             if (isAbandoned) {
                 buffer.remove(id);
             }
@@ -61,7 +62,7 @@ public class MergableBufferedData<METRICS extends Metrics> implements BufferedDa
     @Override
     public List<METRICS> read() {
         try {
-            return buffer.values().stream().collect(Collectors.toList());
+            return new ArrayList<>(buffer.values());
         } finally {
             buffer.clear();
         }

@@ -63,4 +63,18 @@ public class BrowserErrorLog extends Source {
     @Getter
     @Setter
     private byte[] dataBinary;
+
+    @Override
+    public void recycle() {
+        uniqueId = null;
+        serviceId = null;
+        serviceVersionId = null;
+        pagePathId = null;
+        pagePath = null;
+        timestamp = 0;
+        errorCategory = null;
+        dataBinary = null;
+        setTimeBucket(0);
+        handle.recycle(this);
+    }
 }

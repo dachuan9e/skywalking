@@ -67,4 +67,18 @@ public class ServiceInstanceCLRThread extends Source {
     @Getter
     @Setter
     private long maxWorkerThreads;
+
+    @Override
+    public void recycle() {
+        id = null;
+        name = null;
+        serviceName = null;
+        serviceId = null;
+        availableCompletionPortThreads = 0;
+        availableWorkerThreads = 0;
+        maxCompletionPortThreads = 0;
+        maxWorkerThreads = 0;
+        setTimeBucket(0);
+        handle.recycle(this);
+    }
 }

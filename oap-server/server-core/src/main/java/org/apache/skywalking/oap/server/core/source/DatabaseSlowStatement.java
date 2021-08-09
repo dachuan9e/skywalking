@@ -52,4 +52,14 @@ public class DatabaseSlowStatement extends Source {
         return Const.EMPTY_STRING;
     }
 
+    @Override
+    public void recycle() {
+        id = null;
+        databaseServiceId = null;
+        statement = null;
+        latency = 0;
+        traceId = null;
+        setTimeBucket(0);
+        handle.recycle(this);
+    }
 }

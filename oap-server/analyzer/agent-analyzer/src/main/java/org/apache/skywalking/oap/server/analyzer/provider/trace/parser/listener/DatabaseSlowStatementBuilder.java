@@ -21,6 +21,7 @@ package org.apache.skywalking.oap.server.analyzer.provider.trace.parser.listener
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.apache.skywalking.oap.server.core.SourceObjectPool;
 import org.apache.skywalking.oap.server.core.analysis.IDManager;
 import org.apache.skywalking.oap.server.core.analysis.NodeType;
 import org.apache.skywalking.oap.server.core.config.NamingControl;
@@ -57,7 +58,7 @@ public class DatabaseSlowStatementBuilder {
     }
 
     DatabaseSlowStatement toDatabaseSlowStatement() {
-        DatabaseSlowStatement dbSlowStat = new DatabaseSlowStatement();
+        DatabaseSlowStatement dbSlowStat = SourceObjectPool.get(DatabaseSlowStatement.class);
         dbSlowStat.setId(id);
         dbSlowStat.setTraceId(traceId);
         dbSlowStat.setDatabaseServiceId(IDManager.ServiceID.buildId(serviceName, type));

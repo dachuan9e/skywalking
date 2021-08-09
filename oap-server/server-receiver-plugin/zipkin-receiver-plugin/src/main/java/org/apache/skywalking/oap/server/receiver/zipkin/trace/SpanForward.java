@@ -22,6 +22,7 @@ import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.skywalking.apm.util.StringUtil;
+import org.apache.skywalking.oap.server.core.SourceObjectPool;
 import org.apache.skywalking.oap.server.core.analysis.IDManager;
 import org.apache.skywalking.oap.server.core.analysis.NodeType;
 import org.apache.skywalking.oap.server.core.analysis.TimeBucket;
@@ -45,7 +46,7 @@ public class SpanForward {
 
     public void send(List<Span> spanList) {
         spanList.forEach(span -> {
-            ZipkinSpan zipkinSpan = new ZipkinSpan();
+            ZipkinSpan zipkinSpan = SourceObjectPool.get(ZipkinSpan.class);
             zipkinSpan.setTraceId(span.traceId());
             zipkinSpan.setSpanId(span.id());
             String serviceName = span.localServiceName();
@@ -71,7 +72,7 @@ public class SpanForward {
                 zipkinSpan.setEndpointId(IDManager.EndpointID.buildId(zipkinSpan.getServiceId(), endpointName));
 
                 //Create endpoint meta for the server side span
-                EndpointMeta endpointMeta = new EndpointMeta();
+                EndpointMeta endpointMeta = SourceObjectPool.get(EndpointMeta.class);
                 endpointMeta.setServiceName(serviceName);
                 endpointMeta.setServiceNodeType(NodeType.Normal);
                 endpointMeta.setEndpoint(endpointName);
@@ -94,7 +95,7 @@ public class SpanForward {
 
             // Create the metadata source
             // No instance name is required in the Zipkin model.
-            ServiceMeta serviceMeta = new ServiceMeta();
+            ServiceMeta serviceMeta = SourceObjectPool.get(ServiceMeta.class);
             serviceMeta.setName(serviceName);
             serviceMeta.setNodeType(NodeType.Normal);
             serviceMeta.setTimeBucket(timeBucket);

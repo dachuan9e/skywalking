@@ -33,6 +33,7 @@ import org.apache.skywalking.oap.server.analyzer.provider.trace.parser.SpanTags;
 import org.apache.skywalking.oap.server.analyzer.provider.trace.parser.listener.AnalysisListener;
 import org.apache.skywalking.oap.server.analyzer.provider.trace.parser.listener.MultiScopesAnalysisListener;
 import org.apache.skywalking.oap.server.core.Const;
+import org.apache.skywalking.oap.server.core.MetricsObjectPool;
 import org.apache.skywalking.oap.server.core.analysis.IDManager;
 import org.apache.skywalking.oap.server.core.analysis.NodeType;
 import org.apache.skywalking.oap.server.core.analysis.manual.networkalias.NetworkAddressAlias;
@@ -85,7 +86,7 @@ public class MultiScopesAnalysisListenerTest {
         MockitoAnnotations.initMocks(this);
 
         when(CACHE.get(any())).thenReturn(null);
-        final NetworkAddressAlias networkAddressAlias = new NetworkAddressAlias();
+        final NetworkAddressAlias networkAddressAlias = MetricsObjectPool.get(NetworkAddressAlias.class);
         final String serviceId = IDManager.ServiceID.buildId("target-service", true);
         final String instanceId = IDManager.ServiceInstanceID.buildId(serviceId, "target-instance");
         networkAddressAlias.setRepresentServiceId(serviceId);

@@ -32,6 +32,7 @@ import org.apache.skywalking.oap.server.analyzer.provider.trace.parser.listener.
 import org.apache.skywalking.oap.server.analyzer.provider.trace.parser.listener.strategy.SegmentStatusStrategy;
 import org.apache.skywalking.oap.server.core.Const;
 import org.apache.skywalking.oap.server.core.CoreModule;
+import org.apache.skywalking.oap.server.core.SourceObjectPool;
 import org.apache.skywalking.oap.server.core.analysis.IDManager;
 import org.apache.skywalking.oap.server.core.analysis.NodeType;
 import org.apache.skywalking.oap.server.core.analysis.TimeBucket;
@@ -57,7 +58,7 @@ public class SegmentAnalysisListener implements FirstAnalysisListener, EntryAnal
     private final SegmentStatusAnalyzer segmentStatusAnalyzer;
     private final TraceLatencyThresholdsAndWatcher traceLatencyThresholdsAndWatcher;
 
-    private final Segment segment = new Segment();
+    private final Segment segment = SourceObjectPool.get(Segment.class);
     private SAMPLE_STATUS sampleStatus = SAMPLE_STATUS.UNKNOWN;
     private String serviceName = Const.EMPTY_STRING;
     private String serviceId = Const.EMPTY_STRING;

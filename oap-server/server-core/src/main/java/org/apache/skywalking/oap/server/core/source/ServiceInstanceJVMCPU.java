@@ -55,4 +55,15 @@ public class ServiceInstanceJVMCPU extends Source {
     @Getter
     @Setter
     private double usePercent;
+
+    @Override
+    public void recycle() {
+        id = null;
+        name = null;
+        serviceName = null;
+        serviceId = null;
+        usePercent = 0;
+        setTimeBucket(0);
+        handle.recycle(this);
+    }
 }

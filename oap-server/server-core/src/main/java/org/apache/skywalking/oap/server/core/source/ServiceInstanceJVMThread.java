@@ -73,4 +73,21 @@ public class ServiceInstanceJVMThread extends Source {
     @Getter
     @Setter
     private long timedWaitingStateThreadCount;
+
+    @Override
+    public void recycle() {
+        id = null;
+        name = null;
+        serviceName = null;
+        serviceId = null;
+        liveCount = 0;
+        daemonCount = 0;
+        peakCount = 0;
+        runnableStateThreadCount = 0;
+        blockedStateThreadCount = 0;
+        waitingStateThreadCount = 0;
+        timedWaitingStateThreadCount = 0;
+        setTimeBucket(0);
+        handle.recycle(this);
+    }
 }

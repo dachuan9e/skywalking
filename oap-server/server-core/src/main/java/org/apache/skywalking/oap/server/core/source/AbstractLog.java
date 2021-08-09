@@ -47,4 +47,26 @@ public abstract class AbstractLog extends Source {
     public String getEntityId() {
         throw new UnexpectedException("getEntityId is not supported in AbstractLog source");
     }
+
+    @Override
+    public void recycle() {
+        timestamp = 0;
+        serviceId = null;
+        serviceInstanceId = null;
+        endpointId = null;
+        endpointName = null;
+        traceId = null;
+        traceSegmentId = null;
+        spanId = 0;
+        contentType = ContentType.NONE;
+        content = null;
+        tagsRawData = null;
+        tags.clear();
+        error = false;
+        setTimeBucket(0);
+        recycle0();
+        handle.recycle(this);
+    }
+
+    protected abstract void recycle0();
 }

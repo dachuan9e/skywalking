@@ -96,5 +96,27 @@ public class EndpointRelation extends Source {
         serviceId = IDManager.ServiceID.buildId(serviceName, serviceNodeType);
         childServiceId = IDManager.ServiceID.buildId(childServiceName, childServiceNodeType);
     }
+
+    @Override
+    public void recycle() {
+        endpoint = null;
+        serviceId = null;
+        serviceName = null;
+        serviceNodeType = null;
+        serviceInstanceName = null;
+        childEndpoint = null;
+        childServiceId = null;
+        childServiceName = null;
+        childServiceNodeType = null;
+        childServiceInstanceName = null;
+        componentId = 0;
+        rpcLatency = 0;
+        status = false;
+        responseCode = 0;
+        type = null;
+        detectPoint = null;
+        setTimeBucket(0);
+        handle.recycle(this);
+    }
 }
 

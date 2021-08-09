@@ -23,6 +23,7 @@ import java.util.Map;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.skywalking.oap.server.core.MetricsObjectPool;
 import org.apache.skywalking.oap.server.core.analysis.IDManager;
 import org.apache.skywalking.oap.server.core.analysis.MetricsExtension;
 import org.apache.skywalking.oap.server.core.analysis.Stream;
@@ -72,7 +73,7 @@ public class NetworkAddressAlias extends Metrics {
         this.representServiceId = alias.getRepresentServiceId();
         this.representServiceInstanceId = alias.getRepresentServiceInstanceId();
         this.lastUpdateTimeBucket = alias.getLastUpdateTimeBucket();
-        /**
+        /*
          * Keep the time bucket as the same time inserted.
          */
         if (this.getTimeBucket() > metrics.getTimeBucket()) {
@@ -113,10 +114,21 @@ public class NetworkAddressAlias extends Metrics {
         return builder;
     }
 
+    @Override
+    public void recycle() {
+        this.address = null;
+        this.representServiceId = null;
+        this.representServiceInstanceId = null;
+        this.lastUpdateTimeBucket = 0;
+        setTimeBucket(0);
+        setLastUpdateTimestamp(0);
+        handle.recycle(this);
+    }
+
     public static class Builder implements StorageHashMapBuilder<NetworkAddressAlias> {
         @Override
         public NetworkAddressAlias storage2Entity(final Map<String, Object> dbMap) {
-            final NetworkAddressAlias networkAddressAlias = new NetworkAddressAlias();
+            final NetworkAddressAlias networkAddressAlias = MetricsObjectPool.get(NetworkAddressAlias.class);
             networkAddressAlias.setAddress((String) dbMap.get(ADDRESS));
             networkAddressAlias.setRepresentServiceId((String) dbMap.get(REPRESENT_SERVICE_ID));
             networkAddressAlias.setRepresentServiceInstanceId((String) dbMap.get(REPRESENT_SERVICE_INSTANCE_ID));

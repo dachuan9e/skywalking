@@ -52,4 +52,14 @@ public class EndpointMeta extends Source {
     public void prepare() {
         this.serviceId = IDManager.ServiceID.buildId(serviceName, serviceNodeType);
     }
+
+    @Override
+    public void recycle() {
+        serviceId = null;
+        serviceName = null;
+        serviceNodeType = null;
+        endpoint = null;
+        setTimeBucket(0);
+        handle.recycle(this);
+    }
 }

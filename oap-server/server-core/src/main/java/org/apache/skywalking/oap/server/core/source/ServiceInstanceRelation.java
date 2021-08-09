@@ -116,4 +116,31 @@ public class ServiceInstanceRelation extends Source {
         sourceServiceInstanceId = IDManager.ServiceInstanceID.buildId(sourceServiceId, sourceServiceInstanceName);
         destServiceInstanceId = IDManager.ServiceInstanceID.buildId(destServiceId, destServiceInstanceName);
     }
+
+    @Override
+    public void recycle() {
+        entityId = null;
+        sourceServiceInstanceId = null;
+        sourceServiceId = null;
+        sourceServiceName = null;
+        sourceServiceNodeType = null;
+        sourceServiceInstanceName = null;
+        destServiceInstanceId = null;
+        destServiceId = null;
+        destServiceNodeType = null;
+        destServiceName = null;
+        destServiceInstanceName = null;
+        endpoint = null;
+        componentId = 0;
+        latency = 0;
+        status = false;
+        responseCode = 0;
+        type = null;
+        detectPoint = null;
+        tlsMode = null;
+        sideCar.recycle();
+        tcpInfo.recycle();
+        setTimeBucket(0);
+        handle.recycle(this);
+    }
 }

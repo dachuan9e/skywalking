@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import org.apache.skywalking.apm.network.event.v3.Source;
 import org.apache.skywalking.oap.server.core.CoreModule;
+import org.apache.skywalking.oap.server.core.MetricsObjectPool;
 import org.apache.skywalking.oap.server.core.analysis.TimeBucket;
 import org.apache.skywalking.oap.server.core.analysis.worker.MetricsStreamProcessor;
 import org.apache.skywalking.oap.server.core.config.NamingControl;
@@ -40,7 +41,7 @@ public class EventRecordAnalyzerListener implements EventAnalyzerListener {
 
     private final SourceReceiver sourceReceiver;
 
-    private final Event event = new Event();
+    private final Event event = MetricsObjectPool.get(Event.class);
 
     @Override
     public void build() {

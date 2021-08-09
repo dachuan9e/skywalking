@@ -42,4 +42,12 @@ public class ServiceMeta extends Source {
 
     private String name;
     private NodeType nodeType;
+
+    @Override
+    public void recycle() {
+        name = null;
+        nodeType = null;
+        setTimeBucket(0);
+        handle.recycle(this);
+    }
 }

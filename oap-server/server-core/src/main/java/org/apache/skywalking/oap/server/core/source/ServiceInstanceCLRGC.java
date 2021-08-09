@@ -67,4 +67,18 @@ public class ServiceInstanceCLRGC extends Source {
     @Getter
     @Setter
     private long heapMemory;
+
+    @Override
+    public void recycle() {
+        id = null;
+        name = null;
+        serviceName = null;
+        serviceId = null;
+        gen0CollectCount = 0;
+        gen1CollectCount = 0;
+        gen2CollectCount = 0;
+        heapMemory = 0;
+        setTimeBucket(0);
+        handle.recycle(this);
+    }
 }
